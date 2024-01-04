@@ -17,12 +17,12 @@ class Action(enum.Enum):
 
 
 
-    def neighbors(self, node1, node2):
+    """def neighbors(self, node1, node2):
         # Questa è una semplice euristica che considera vicini i nodi adiacenti orizzontalmente o verticalmente.
         # Potrebbe essere necessario adattarla in base alle regole di movimento del tuo gioco.
         return abs(node1.state(0) - node2.state(1)) + abs(node1.state(0) - node2.state(1)) == 1 or (
                 (node1.state(0) - node2.state(0)) ** 2 + (
-                node1.state(1) - node2.state(1)) ** 2) ** 0.5 == 2 ** 0.5
+                node1.state(1) - node2.state(1)) ** 2) ** 0.5 == 2 ** 0.5"""
 
 
 class AstarGraphProblem:
@@ -77,7 +77,7 @@ class AstarGraphProblem:
         action in the given state. The action must be one of
         self.actions(state)."""
         if action == Action.UP:
-            return [node.state(0) - 1, node.state(1)]
+            return (node.state(0) - 1, node.state(1))
         elif action == Action.DOWN:
             return [node.state(0) + 1, node.state(1)]
         elif action == Action.LEFT:
@@ -93,7 +93,7 @@ class AstarGraphProblem:
         elif action == Action.DOWN_RIGHT:
             return [node.state(0) + 1, node.state(1) + 1]
 
-    def getNeighbors(self, node):
+    def get_neighbors(self, node):
         """Return the neighbors of the given state"""
         actions = self.actions(node.state)
         neighbors = []
