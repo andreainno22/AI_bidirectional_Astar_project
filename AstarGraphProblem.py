@@ -38,10 +38,10 @@ class AstarGraphProblem:
         self.initial = initial
         self.goal = goal
         self.heuristic = heuristic
-        self.nodes = [[0 for i in range(len(graph))] for j in range(len(graph[0]))]
+        self.nodes = [[0 for _ in row] for row in graph]
         for i in range(len(graph)):
             for j in range(len(graph[i])):
-                if graph[i][j] == '.':
+                if graph[i][j] == '.' or graph[i][j] == 'G' or graph[i][j] == 'S' or graph[i][j] == 'W':
                     self.nodes[i][j] = 1
                     # self.nodes.append(Node([i, j]))
 

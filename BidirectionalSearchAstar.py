@@ -6,10 +6,14 @@ from Node import Node
 from queue import PriorityQueue
 
 finish = False
-
+no_solution = False
 
 def bidirectional_search(problem):
     """si guarda solo il costo, non la funzione. il costo per passare da un nodo all'altro è cvw = cvw + 1/2(htv - hsv) + 1/2(hsw - htv)"""
+    global finish
+    global no_solution
+    finish = False
+    no_solution = False
     nodeF = Node(problem.initial)
     nodeB = Node(problem.goal)
     frontierF = PriorityQueue()
@@ -25,7 +29,7 @@ def bidirectional_search(problem):
     reachedF, reachedB = {nodeF.state: nodeF}, {nodeB.state: nodeB}
     solution = Node((None, None), None, None, 0, inf)
 
-    while not frontierF.empty() and not frontierB.empty() or finish is False:
+    while not frontierF.empty() and not frontierB.empty() and finish is False and no_solution is False:
         """ The algorithm terminates as soon as one of the searches is about to scan a node v with dv + hv ≥ C(P) or when Qs = Qt = ∅."""
         # Estrai il nodo con il costo f minore da ciascuna coda
         hStartNode, startNode = frontierF.queue[0]
@@ -34,6 +38,8 @@ def bidirectional_search(problem):
             solution = expand("F", problem, reachedF, reachedB, frontierF, solution)
         else:
             solution = expand("B", problem, reachedB, reachedF, frontierB, solution)
+    if solution.state is None:
+        return None
 
     path1 = Node.path(solution)
     solution.parent = solution.parent2
@@ -66,6 +72,10 @@ def expand(direction, problem, reached1, reached2, frontier, solution):
                 solution2: Node = merge_nodes(direction, neighbor, reached2[s])
                 if solution is None or solution2.path_cost < solution.path_cost:
                     solution = solution2
+    if solution.state is None:
+        global no_solution
+        no_solution = True
+        return
     return solution
 
 
