@@ -30,7 +30,7 @@ def main():
     timer_end1 = timer()
     print(result_path1)
     print("Time elapsed: ", timer_end1 - timer_start1)
-    # print(2**0.5)
+    # print(2**0.5).
 
     """queue = PriorityQueue()
     queue.put((1, Node((0, 1), None, None, 0, 0)))
