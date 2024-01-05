@@ -16,8 +16,10 @@ def bidirectional_search(problem):
     frontierB = PriorityQueue()
 
     """i nodi di inizio e fine sono aggiunti alle rispettive code con priorità h(n) (hanno costo 0)"""
-    frontierF.put((problem.h(nodeF, nodeB), nodeF))
-    frontierB.put((problem.h(nodeB, nodeF), nodeB))
+    hInitialNode = problem.h(nodeF, nodeB.state)
+    hGoalNode = problem.h(nodeB, nodeF.state)
+    frontierF.put((hInitialNode, nodeF))
+    frontierB.put((hGoalNode, nodeB))
 
     """i nodi di inizio e fine sono aggiunti ai rispettivi dizionari di nodi raggiunti"""
     reachedF, reachedB = {nodeF.state: nodeF}, {nodeB.state: nodeB}
@@ -32,10 +34,13 @@ def bidirectional_search(problem):
             solution = expand("F", problem, reachedF, reachedB, frontierF, solution)
         else:
             solution = expand("B", problem, reachedB, reachedF, frontierB, solution)
+
     path1 = Node.path(solution)
     solution.parent = solution.parent2
     path2 = Node.path(solution)
     path = path1 + path2[::-1]
+    """il nodo solution è duplicato, viene rimosso"""
+    path.remove(solution)
     return path
 
 
@@ -55,7 +60,8 @@ def expand(direction, problem, reached1, reached2, frontier, solution):
         s = neighbor.state
         if s not in reached1 or neighbor.path_cost < reached1[s].path_cost:
             reached1[s] = neighbor
-            frontier.put(neighbor)
+            """aggiunge il nodo espanso alla frontiera"""
+            frontier.put((problem.path_cost(node.path_cost, node, neighbor.action, neighbor), neighbor))
             if s in reached2:
                 solution2: Node = merge_nodes(direction, neighbor, reached2[s])
                 if solution is None or solution2.path_cost < solution.path_cost:
