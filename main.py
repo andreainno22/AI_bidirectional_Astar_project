@@ -11,21 +11,23 @@ from StringToMatrix import get_map
 
 # Press Maiusc+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
+# todo: implementare coda con priorità non con heap binario
+# todo: aggiungere terzo grafo
 
 def main():
-    # game_map1 = get_map('arena2.map', 5, 209, 281)
-    game_map2 = get_map('arena.map', 5, 49, 49)
-    problem = AstarGraphProblem((19, 26), (10, 29), game_map2)
+    battleground_map = get_map('maps/plainsofsnow/plainsofsnow.map', 1, 512, 512)
+
+    # game_map2 = get_map('arena.map', 5, 49, 49)
+    problem = AstarGraphProblem((290, 359), (261, 351), battleground_map)
     timer_start = timer()
-    result_path = bidirectional_search(problem)
+    result_path = bidirectional_search_Astar(problem, "")
     timer_end = timer()
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start)
 
-    problem1 = AstarGraphProblem((19, 26), (10, 29), game_map2, 'euclidean')
+    problem1 = AstarGraphProblem((290, 359), (261, 351), battleground_map)
     timer_start1 = timer()
-    result_path1 = bidirectional_search(problem1)
+    result_path1 = bidirectional_search_Astar(problem1, "heap")
     timer_end1 = timer()
     print(result_path1)
     print("Time elapsed: ", timer_end1 - timer_start1)

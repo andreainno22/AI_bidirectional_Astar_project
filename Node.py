@@ -1,12 +1,4 @@
 class Node:
-    """A node in a search tree. Contains a pointer to the parent (the node
-    that this is a successor of) and to the actual state for this node. Note
-    that if a state is arrived at by two paths, then there are two nodes with
-    the same state. Also includes the action that got us to this state, and
-    the total path_cost (also known as g) to reach the node. Other functions
-    may add an f and h value; see best_first_graph_search and astar_search for
-    an explanation of how the f and h values are handled. You will not need to
-    subclass this class."""
 
     def __init__(self, state, parent=None, parent2=None, action=None, path_cost=0):
         """Create a search tree Node, derived from a parent by an action."""
@@ -22,7 +14,6 @@ class Node:
 
     def set_path_cost(self, path_cost):
         self.path_cost = path_cost
-
 
     def __repr__(self):
         return "<Node {}>".format(self.state)
