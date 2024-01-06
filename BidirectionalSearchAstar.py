@@ -34,15 +34,20 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
     n_iter = 0
 
     """ The algorithm terminates as soon as one of the searches is about to scan a node v with dv + hv ≥ C(P) or when Qs = Qt = ∅."""
-    while not frontierF.empty() and not frontierB.empty() and finish is False:
+    while not frontierF.empty() or not frontierB.empty() and finish is False:
         """ salva senza estrarre il nodo a più alta priorità da ciascuna frontiera """
         n_iter = n_iter + 1
+        fStartNode, fEndNode = inf, inf
         if frontier_type == "heap":
-            fStartNode, startNode = frontierF.queue[0]
-            fEndNode, endNode = frontierB.queue[0]
+            if not frontierF.empty():
+                fStartNode, startNode = frontierF.queue[0]
+            if not frontierB.empty():
+                fEndNode, endNode = frontierB.queue[0]
         else:
-            fStartNode, startNode = frontierF.first_element()
-            fEndNode, endNode = frontierB.first_element()
+            if not frontierF.is_empty():
+                fStartNode, startNode = frontierF.first_element()
+            if not frontierB.is_empty():
+                fEndNode, endNode = frontierB.first_element()
 
         """sceglie quale nodo espandere in base alla priorità"""
         if fStartNode < fEndNode:

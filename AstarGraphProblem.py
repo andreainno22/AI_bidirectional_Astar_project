@@ -39,8 +39,8 @@ class AstarGraphProblem:
         self.goal = goal
         self.heuristic = heuristic
         self.nodes = [[0 for _ in row] for row in graph]
-        for i in range(len(graph)):
-            for j in range(len(graph[i])):
+        for i in range(len(graph)):  # numero di righe
+            for j in range(len(graph[i])):  # numero di colonne
                 if graph[i][j] == '.' or graph[i][j] == 'G' or graph[i][j] == 'S' or graph[i][j] == 'W':
                     self.nodes[i][j] = 1
                     # self.nodes.append(Node([i, j]))

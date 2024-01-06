@@ -9,28 +9,103 @@ from timeit import default_timer as timer
 from StringToMatrix import get_map
 
 
-# Press Maiusc+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-# todo: implementare coda con priorità non con heap binario
-# todo: aggiungere terzo grafo
+# todo: per percorsilunghi a volte l'alg termina senza che i due raggiunti si incontrino, anche se il persorso esiste
 
 def main():
-    battleground_map = get_map('maps/plainsofsnow/plainsofsnow.map', 1, 512, 512)
+    battleground_map = get_map('maps/battleground/battleground.map', 1, 512, 512)
+    AR0011SR_map = get_map('maps/AR0011SR/AR0011SR.map', 1, 224, 216)
 
-    # game_map2 = get_map('arena.map', 5, 49, 49)
-    problem = AstarGraphProblem((290, 359), (261, 351), battleground_map)
-    timer_start = timer()
-    result_path = bidirectional_search_Astar(problem, "")
+    # battleground_heap_no_heuristic_problem
+    """timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map), "heap")
     timer_end = timer()
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start)
 
-    problem1 = AstarGraphProblem((290, 359), (261, 351), battleground_map)
-    timer_start1 = timer()
-    result_path1 = bidirectional_search_Astar(problem1, "heap")
-    timer_end1 = timer()
-    print(result_path1)
-    print("Time elapsed: ", timer_end1 - timer_start1)
+    #battleground_heap_euclidean_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map, "euclidean"),
+                                             "heap")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_heap_manhattan_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map, "manhattan"),
+                                             "heap")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_no_heuristic_problem 
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map), "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_euclidean_problem 
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map, "euclidean"),
+                                             "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_manhattan_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((376, 101), (193, 331), battleground_map, "manhattan"),
+                                             "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)"""
+
+    """AR0011SR_heap_no_heuristic_problem"""
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((100, 41), (138, 41), AR0011SR_map), "heap")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    """#battleground_heap_euclidean_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((131,216),(131,214), AR0011SR_map, "euclidean"),
+                                             "heap")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_heap_manhattan_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((131,216),(131,214), AR0011SR_map, "manhattan"),
+                                             "heap")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_no_heuristic_problem 
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((131,216),(131,214), AR0011SR_map), "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_euclidean_problem 
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((131,216),(131,214), AR0011SR_map, "euclidean"),
+                                             "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)
+
+    #battleground_basic_manhattan_problem
+    timer_start = timer()
+    result_path = bidirectional_search_Astar(AstarGraphProblem((131,216),(131,214), AR0011SR_map, "manhattan"),
+                                             "basic")
+    timer_end = timer()
+    print(result_path)
+    print("Time elapsed: ", timer_end - timer_start)"""
 
 
 # Press the green button in the gutter to run the script.
