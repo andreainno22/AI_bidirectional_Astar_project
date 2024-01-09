@@ -34,7 +34,7 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
     n_iter = 0
 
     """ The algorithm terminates as soon as one of the searches is about to scan a node v with dv + hv ≥ C(P) or when Qs = Qt = ∅."""
-    while not frontierF.empty() or not frontierB.empty() and finish is False:
+    while not frontierF.empty() and not frontierB.empty() and finish is False:
         """ salva senza estrarre il nodo a più alta priorità da ciascuna frontiera """
         n_iter = n_iter + 1
         fStartNode, fEndNode = inf, inf
@@ -62,7 +62,7 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
     path2 = Node.path(solution)
     path = path1 + path2[::-1]
     """il nodo solution è duplicato, viene rimosso"""
-    path.remove(solution)
+    path.remove(solution.state)
     return path, n_iter, solution.path_cost
 
 
@@ -78,12 +78,12 @@ def expand(direction, problem, reached1, reached2, frontier, solution):
             finish = True
             return solution
     # Aggiorna i nodi vicini per il nodo di inizio
-    for neighbor in problem.get_neighbors(node):
+    for neighbor in problem.get_neighbors_bi(node):
         s = neighbor.state
         if s not in reached1 or neighbor.path_cost < reached1[s].path_cost:
             reached1[s] = neighbor
             """aggiunge il nodo espanso alla frontiera"""
-            frontier.put((problem.path_cost(node.path_cost, node, neighbor.action, neighbor), neighbor))
+            frontier.put((neighbor.path_cost, neighbor))
             if s in reached2:
                 solution2: Node = merge_nodes(direction, neighbor, reached2[s])
                 if solution is None or solution2.path_cost < solution.path_cost:

@@ -16,15 +16,6 @@ class Action(enum.Enum):
     DOWN_RIGHT = 8
 
 
-
-    """def neighbors(self, node1, node2):
-        # Questa è una semplice euristica che considera vicini i nodi adiacenti orizzontalmente o verticalmente.
-        # Potrebbe essere necessario adattarla in base alle regole di movimento del tuo gioco.
-        return abs(node1.state[0] - node2.state[1]) + abs(node1.state[0] - node2.state[1]) == 1 or (
-                (node1.state[0] - node2.state[0]) ** 2 + (
-                node1.state[1] - node2.state[1]) ** 2) ** 0.5 == 2 ** 0.5"""
-
-
 class AstarGraphProblem:
     """The abstract class for a formal problem. You should subclass
     this and implement the methods actions and result, and possibly
@@ -93,18 +84,29 @@ class AstarGraphProblem:
         elif action == Action.DOWN_RIGHT:
             return node.state[0] + 1, node.state[1] + 1
 
-    def get_neighbors(self, node):
+    def get_neighbors_bi(self, node):
         """Return the neighbors of the given state"""
         actions = self.actions(node.state)
         neighbors = []
         for action in actions:
             neighbor = Node(self.result(node, action), node, None, action)
-            neighbor.set_path_cost(self.path_cost(node.path_cost, node, action, neighbor))
+            neighbor.set_path_cost(self.path_cost_bi(node.path_cost, node, action, neighbor))
             neighbors.append(neighbor)
         """ rende una lista di stati adiacenti a quello di partenza"""
         return neighbors
 
-    def path_cost(self, c, node1, action, node2):
+    def get_neighbors_un(self, node):
+        """Return the neighbors of the given state"""
+        actions = self.actions(node.state)
+        neighbors = []
+        for action in actions:
+            neighbor = Node(self.result(node, action), node, None, action)
+            neighbor.set_path_cost(self.path_cost_un(node.path_cost, node, action, neighbor))
+            neighbors.append(neighbor)
+        """ rende una lista di stati adiacenti a quello di partenza"""
+        return neighbors
+
+    def path_cost_bi(self, c, node1, action, node2):
         """Vogliamo il percorso di costo minore!!!
         Return the cost of a solution path that arrives at state2 from
         state1 via action, assuming cost c to get up to state1. If the problem
@@ -116,9 +118,21 @@ class AstarGraphProblem:
                     self.h(node1, self.initial) - self.h(node1, self.goal) + self.h(node2, self.goal) - self.h(
                 node2, self.initial))
         else:
-            return c + 2**0.5 + 0.5 * (
+            return c + 2 ** 0.5 + 0.5 * (
                     self.h(node1, self.initial) - self.h(node1, self.goal) + self.h(node2, self.goal) - self.h(
                 node2, self.initial))
+
+    def path_cost_un(self, c, node1, action, node2):
+        """Vogliamo il percorso di costo minore!!!
+        Return the cost of a solution path that arrives at state2 from
+        state1 via action, assuming cost c to get up to state1. If the problem
+        is such that the path doesn't matter, this function will only look at
+        state2. If the path does matter, it will consider c and maybe state1
+        and action. The default method costs 1 for every step in the path."""
+        if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
+            return c + 1 + self.h(node1, self.goal) + self.h(node2, self.goal)
+        else:
+            return c + 2 ** 0.5 + self.h(node1, self.goal) + self.h(node2, self.goal)
 
     def h(self, currentNode, goalNodeState):
         if self.heuristic is None:
@@ -129,4 +143,3 @@ class AstarGraphProblem:
             return ((currentNode.state[0] - goalNodeState[0]) ** 2 + (
                     currentNode.state[1] - goalNodeState[1]) ** 2) ** 0.5
         return
-

@@ -1,15 +1,18 @@
 # This is a sample Python script.
 from cmath import sqrt
+from turtledemo.chaos import plot
 
 from AstarGraphProblem import AstarGraphProblem
 from queue import PriorityQueue
 from BidirectionalSearchAstar import *
 from timeit import default_timer as timer
+import matplotlib.pyplot as plt
 
 from StringToMatrix import get_map
+from UnidirectionalSearchAstar import unidirectional_search_Astar
 
 
-# todo: per percorsilunghi a volte l'alg termina senza che i due raggiunti si incontrino, anche se il persorso esiste
+# todo: viene data una soluzione con costo subottimo a volte....perchè?
 
 def main():
     battleground_map = get_map('maps/battleground/battleground.map', 1, 512, 512)
@@ -63,10 +66,22 @@ def main():
 
     """AR0011SR_heap_no_heuristic_problem"""
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((100, 41), (138, 41), AR0011SR_map), "heap")
+    result_path = bidirectional_search_Astar(AstarGraphProblem((76, 93), (162, 54), AR0011SR_map), "heap")
     timer_end = timer()
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start)
+
+    # Supponiamo che il tuo percorso sia qualcosa del genere
+    path = result_path[0]
+    # Dividiamo le tuple in due liste separate per le coordinate x e y
+    x = [coord[0] for coord in path]
+    y = [coord[1] for coord in path]
+
+    # Creiamo il grafico
+    plt.plot(x, y)
+
+    # Mostriamo il grafico
+    plt.show()
 
     """#battleground_heap_euclidean_problem
     timer_start = timer()

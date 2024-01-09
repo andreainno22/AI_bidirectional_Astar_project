@@ -24,12 +24,12 @@ def bidirectional_search(problem):
 
         for c in n.expand(problem):
             if c in frontier_dir or c in closed_dir:
-                if g_dir[c] <= problem.path_cost(g_dir[n], n.state, None, c.state):
+                if g_dir[c] <= problem.path_cost_bi(g_dir[n], n.state, None, c.state):
                     continue
 
                 frontier_dir.remove(c)
 
-            g_dir[c] = problem.path_cost(g_dir[n], n.state, None, c.state)
+            g_dir[c] = problem.path_cost_bi(g_dir[n], n.state, None, c.state)
             frontier_dir.append(c)
 
             if c in frontier_other:
