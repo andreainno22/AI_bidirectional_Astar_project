@@ -130,15 +130,16 @@ class AstarGraphProblem:
         state2. If the path does matter, it will consider c and maybe state1
         and action. The default method costs 1 for every step in the path."""
         if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
-            return c + 1 + self.h(node1, self.goal) + self.h(node2, self.goal)
+            return c + 1 + self.h(node2, self.goal) - self.h(node1, self.goal)
         else:
-            return c + 2 ** 0.5 + self.h(node1, self.goal) + self.h(node2, self.goal)
+            return c + 2 ** 0.5 + self.h(node2, self.goal) - self.h(node1, self.goal)
 
     def h(self, currentNode, goalNodeState):
         if self.heuristic is None:
             return 0
-        elif self.heuristic == "manhattan":
-            return abs(currentNode.state[0] - goalNodeState[0]) + abs(currentNode.state[1] - goalNodeState[1])
+        # l'euristica manhattan non può essere utilizzata perchè l'agente può muoversi anche in diagonale, al sua posto viene usata l'euristica di chebyshev
+        elif self.heuristic == "chebyshev":
+            return max(abs(currentNode.state[0] - goalNodeState[0]), abs(currentNode.state[1] - goalNodeState[1]))
         elif self.heuristic == "euclidean":
             return ((currentNode.state[0] - goalNodeState[0]) ** 2 + (
                     currentNode.state[1] - goalNodeState[1]) ** 2) ** 0.5

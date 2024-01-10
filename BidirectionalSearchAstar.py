@@ -23,10 +23,8 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
         frontierB = PriorityList()
 
     """i nodi di inizio e fine sono aggiunti alle rispettive code con priorità h(n) (hanno costo 0)"""
-    hInitialNode = problem.h(nodeF, nodeB.state)
-    hGoalNode = problem.h(nodeB, nodeF.state)
-    frontierF.put((hInitialNode, nodeF))
-    frontierB.put((hGoalNode, nodeB))
+    frontierF.put((problem.h(nodeF, nodeB.state), nodeF))
+    frontierB.put((problem.h(nodeB, nodeF.state), nodeB))
 
     """i nodi di inizio e fine sono aggiunti ai rispettivi dizionari di nodi raggiunti"""
     reachedF, reachedB = {nodeF.state: nodeF}, {nodeB.state: nodeB}
@@ -34,7 +32,8 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
     n_iter = 0
 
     """ The algorithm terminates as soon as one of the searches is about to scan a node v with dv + hv ≥ C(P) or when Qs = Qt = ∅."""
-    while not frontierF.empty() and not frontierB.empty() and finish is False:
+    # while not frontierF.empty() or not frontierB.empty() and finish is False:
+    while finish is False:
         """ salva senza estrarre il nodo a più alta priorità da ciascuna frontiera """
         n_iter = n_iter + 1
         fStartNode, fEndNode = inf, inf
@@ -54,6 +53,14 @@ def bidirectional_search_Astar(problem, frontier_type="basic"):
             solution = expand("F", problem, reachedF, reachedB, frontierF, solution)
         else:
             solution = expand("B", problem, reachedB, reachedF, frontierB, solution)
+        """if solution.path_cost != inf:
+            path1 = Node.path(solution)
+            solution.parent = solution.parent2
+            path2 = Node.path(solution)
+            path = path1 + path2[::-1]
+            #il nodo solution è duplicato, viene rimosso
+            path.remove(solution.state)
+            return path, n_iter, solution.path_cost"""
     if solution.state is None:
         return None
 
@@ -70,7 +77,7 @@ def expand(direction, problem, reached1, reached2, frontier, solution):
     _, node = frontier.get()
     global finish
     if direction == "F":
-        if node.depth + problem.h(node, problem.goal) >= solution.path_cost:
+        if node.path_cost + problem.h(node, problem.goal) >= solution.path_cost:
             finish = True
             return solution
     else:
@@ -86,7 +93,7 @@ def expand(direction, problem, reached1, reached2, frontier, solution):
             frontier.put((neighbor.path_cost, neighbor))
             if s in reached2:
                 solution2: Node = merge_nodes(direction, neighbor, reached2[s])
-                if solution is None or solution2.path_cost < solution.path_cost:
+                if solution2.path_cost < solution.path_cost:
                     solution = solution2
     return solution
 
