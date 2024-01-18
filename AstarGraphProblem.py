@@ -29,14 +29,7 @@ class AstarGraphProblem:
         self.initial = initial
         self.goal = goal
         self.heuristic = heuristic
-        self.nodes = [[0 for _ in row] for row in graph]
-        for i in range(len(graph)):  # numero di righe
-            for j in range(len(graph[i])):  # numero di colonne
-                if graph[i][j] == '.' or graph[i][j] == 'G' or graph[i][j] == 'S' or graph[i][j] == 'W':
-                    self.nodes[i][j] = 1
-                    # self.nodes.append(Node([i, j]))
-
-        """potrei salvare la mappa in una matrice di tuple, dove ogni tupla è composta da (x,y)"""
+        self.nodes = graph
 
     def actions(self, state):
         """Return the actions that can be executed in the given
@@ -91,6 +84,7 @@ class AstarGraphProblem:
         for action in actions:
             neighbor = Node(self.result(node, action), node, None, action)
             neighbor.set_path_cost(self.path_cost_bi(node.path_cost, node, action, neighbor))
+            neighbor.set_effective_path_cost(self.effective_path_cost(node.effective_path_cost, action))
             neighbors.append(neighbor)
         """ rende una lista di stati adiacenti a quello di partenza"""
         return neighbors
@@ -102,6 +96,7 @@ class AstarGraphProblem:
         for action in actions:
             neighbor = Node(self.result(node, action), node, None, action)
             neighbor.set_path_cost(self.path_cost_un(node.path_cost, node, action, neighbor))
+            neighbor.set_effective_path_cost(self.effective_path_cost(node.effective_path_cost, action))
             neighbors.append(neighbor)
         """ rende una lista di stati adiacenti a quello di partenza"""
         return neighbors
@@ -134,12 +129,23 @@ class AstarGraphProblem:
         else:
             return c + 2 ** 0.5 + self.h(node2, self.goal) - self.h(node1, self.goal)
 
+    def effective_path_cost(self, c, action):
+        """Vogliamo il percorso di costo minore!!!
+        Return the cost of a solution path that arrives at state2 from
+        state1 via action, assuming cost c to get up to state1. If the problem
+        is such that the path doesn't matter, this function will only look at
+        state2. If the path does matter, it will consider c and maybe state1
+        and action. The default method costs 1 for every step in the path."""
+        if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
+            return c + 1
+        else:
+            return c + 2 ** 0.5
+
     def h(self, currentNode, goalNodeState):
         if self.heuristic is None:
             return 0
-        # l'euristica manhattan non può essere utilizzata perchè l'agente può muoversi anche in diagonale, al sua posto viene usata l'euristica di chebyshev
-        elif self.heuristic == "chebyshev":
-            return max(abs(currentNode.state[0] - goalNodeState[0]), abs(currentNode.state[1] - goalNodeState[1]))
+        elif self.heuristic == "manhattan":
+            return abs(currentNode.state[0] - goalNodeState[0]) + abs(currentNode.state[1] - goalNodeState[1])
         elif self.heuristic == "euclidean":
             return ((currentNode.state[0] - goalNodeState[0]) ** 2 + (
                     currentNode.state[1] - goalNodeState[1]) ** 2) ** 0.5

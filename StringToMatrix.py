@@ -23,4 +23,11 @@ def get_map(file_name, start_row, r, c):
                     index += 1
         return matrix
 
-    return string_to_matrix(string, r, c)
+    matrix = string_to_matrix(string, r, c)
+
+    new_matrix = [[0 for _ in row] for row in matrix]
+    for i in range(len(matrix)):  # numero di righe
+        for j in range(len(matrix[i])):  # numero di colonne
+            if matrix[i][j] == '.' or matrix[i][j] == 'G' or matrix[i][j] == 'S' or matrix[i][j] == 'W':
+                new_matrix[i][j] = 1
+    return new_matrix

@@ -3,7 +3,6 @@ from cmath import sqrt
 from turtledemo.chaos import plot
 
 from AstarGraphProblem import AstarGraphProblem
-from queue import PriorityQueue
 from BidirectionalSearchAstar import *
 from timeit import default_timer as timer
 import matplotlib.pyplot as plt
@@ -12,17 +11,24 @@ from StringToMatrix import get_map
 from UnidirectionalSearchAstar import unidirectional_search_Astar
 
 
-# è stata usata l'euristica di chebyshev al posto di manhattan perchè l'agente può muoversi anche in diagonale
 # todo: unidir è più veloce di bidir, perchè??
 
 def main():
-    battleground_map = get_map('maps/battleground/battleground.map', 1, 512, 512)
-    AR0011SR_map = get_map('maps/AR0011SR/AR0011SR.map', 1, 224, 216)
-    plainsofsnow_map = get_map('maps/plainsofsnow/plainsofsnow.map', 1, 512, 512)
+    """mappa = [[1, 1, 1, 1, 0],
+             [0, 0, 0, 1, 0],
+             [1, 0, 1, 0, 0],]
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(AstarGraphProblem((0,1), (1,3), mappa), "basic")
+    result_path2 = unidirectional_search_Astar(AstarGraphProblem((0, 1), (1, 3), mappa), "basic")
+    print(result_path)
+    print(result_path2)"""
+    battleground_map = get_map('maps/battleground/battleground.map', 5, 512, 512)
+    AR0011SR_map = get_map('maps/AR0011SR/AR0011SR.map', 5, 224, 216)
+    plainsofsnow_map = get_map('maps/plainsofsnow/plainsofsnow.map', 5, 512, 512)
 
     # battleground_heap_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((339, 67), (133, 399), battleground_map), "heap")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map), "heap")
     timer_end = timer()
     print("battleground_heap_no_heuristic_problem")
     print(result_path)
@@ -30,25 +36,28 @@ def main():
 
     # battleground_heap_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map, "euclidean"),
                                              "heap")
     timer_end = timer()
     print("battleground_heap_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # battleground_heap_chebyshev_problem
+    # battleground_heap_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map, "manhattan"),
                                              "heap")
     timer_end = timer()
-    print("battleground_heap_chebyshev_problem")
+    print("battleground_heap_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
     # battleground_basic_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map), "basic")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map), "basic")
     timer_end = timer()
     print("battleground_basic_no_heuristic_problem")
     print(result_path)
@@ -56,25 +65,27 @@ def main():
 
     # battleground_basic_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map, "euclidean"),
                                              "basic")
     timer_end = timer()
     print("battleground_basic_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # battleground_basic_chebyshev_problem
+    # battleground_basic_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((418, 250), (451, 277), battleground_map, "manhattan"),
                                              "basic")
     timer_end = timer()
-    print("battleground_basic_chebyshev_problem")
+    print("battleground_basic_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
     # battleground_heap_no_heuristic_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((339, 67), (133, 399), battleground_map),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map),
                                               "heap")
     timer_end = timer()
     print("battleground_heap_no_heuristic_problem unidirectional")
@@ -90,12 +101,12 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # battleground_heap_chebyshev_problem unidirectional
+    # battleground_heap_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "chebyshev"),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "manhattan"),
                                               "heap")
     timer_end = timer()
-    print("battleground_heap_chebyshev_problem unidirectional")
+    print("battleground_heap_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
@@ -116,19 +127,20 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # battleground_basic_chebyshev_problem unidirectional
+    # battleground_basic_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "chebyshev"),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((418, 250), (451, 277), battleground_map, "manhattan"),
                                               "basic")
     timer_end = timer()
-    print("battleground_basic_chebyshev_problem unidirectional")
+    print("battleground_basic_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    """A0011SR map"""
+    # A0011SR map
     # AR0011SR_heap_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map), "heap")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map), "heap")
     timer_end = timer()
     print("AR0011SR_heap_no_heuristic_problem")
     print(result_path)
@@ -136,25 +148,28 @@ def main():
 
     # A0011SR_heap_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "euclidean"),
                                              "heap")
     timer_end = timer()
     print("A0011SR_heap_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # A0011SR_heap_chebyshev_problem
+    # A0011SR_heap_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "manhattan"),
                                              "heap")
     timer_end = timer()
-    print("A0011SR_heap_chebyshev_problem")
+    print("A0011SR_heap_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
     # A0011SR_basic_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map), "basic")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map), "basic")
     timer_end = timer()
     print("A0011SR_basic_no_heuristic_problem")
     print(result_path)
@@ -162,19 +177,21 @@ def main():
 
     # A0011SR_basic_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "euclidean"),
                                              "basic")
     timer_end = timer()
     print("A0011SR_basic_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # A0011SR_basic_chebyshev_problem
+    # A0011SR_basic_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "manhattan"),
                                              "basic")
     timer_end = timer()
-    print("A0011SR_basic_chebyshev_problem")
+    print("A0011SR_basic_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
@@ -195,12 +212,12 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # A0011SR_heap_chebyshev_problem unidirectional
+    # A0011SR_heap_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "chebyshev"),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "manhattan"),
                                               "heap")
     timer_end = timer()
-    print("A0011SR_heap_chebyshev_problem unidirectional")
+    print("A0011SR_heap_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
@@ -221,19 +238,20 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # A0011SR_basic_chebyshev_problem unidirectional
+    # A0011SR_basic_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "chebyshev"),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((201, 122), (175, 167), AR0011SR_map, "manhattan"),
                                               "basic")
     timer_end = timer()
-    print("A0011SR_basic_chebyshev_problem unidirectional")
+    print("A0011SR_basic_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    """plainsofsnow map"""
+    #plainsofsnow map
     # plainsofsnow_heap_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map), "heap")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map), "heap")
     timer_end = timer()
     print("plainsofsnow_heap_no_heuristic_problem")
     print(result_path)
@@ -241,25 +259,28 @@ def main():
 
     # plainsofsnow_heap_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "euclidean"),
                                              "heap")
     timer_end = timer()
     print("plainsofsnow_heap_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # plainsofsnow_heap_chebyshev_problem
+    # plainsofsnow_heap_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "manhattan"),
                                              "heap")
     timer_end = timer()
-    print("plainsofsnow_heap_chebyshev_problem")
+    print("plainsofsnow_heap_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
     # plainsofsnow_basic_no_heuristic_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map), "basic")
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map), "basic")
     timer_end = timer()
     print("plainsofsnow_basic_no_heuristic_problem")
     print(result_path)
@@ -267,19 +288,21 @@ def main():
 
     # plainsofsnow_basic_euclidean_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "euclidean"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "euclidean"),
                                              "basic")
     timer_end = timer()
     print("plainsofsnow_basic_euclidean_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # plainsofsnow_basic_chebyshev_problem
+    # plainsofsnow_basic_manhattan_problem
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "chebyshev"),
+    result_path = BidirectionalSearchAstar().bidirectional_search_Astar(
+        AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "manhattan"),
                                              "basic")
     timer_end = timer()
-    print("plainsofsnow_basic_chebyshev_problem")
+    print("plainsofsnow_basic_manhattan_problem")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
@@ -300,12 +323,12 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # plainsofsnow_heap_chebyshev_problem unidirectional
+    # plainsofsnow_heap_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = unidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "chebyshev"),
+    result_path = unidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "manhattan"),
                                               "heap")
     timer_end = timer()
-    print("plainsofsnow_heap_chebyshev_problem unidirectional")
+    print("plainsofsnow_heap_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
@@ -326,12 +349,12 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # plainsofsnow_basic_chebyshev_problem unidirectional
+    # plainsofsnow_basic_manhattan_problem unidirectional
     timer_start = timer()
-    result_path = bidirectional_search_Astar(AstarGraphProblem((339, 67), (133, 399), battleground_map),
-                                             "heap")
+    result_path = unidirectional_search_Astar(AstarGraphProblem((305, 96), (298, 144), plainsofsnow_map, "manhattan"),
+                                              "basic")
     timer_end = timer()
-    print("plainsofsnow_basic_chebyshev_problem unidirectional")
+    print("plainsofsnow_basic_manhattan_problem unidirectional")
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
