@@ -7,7 +7,8 @@ Una volta scaricate le mappe è necessario inserire la mappa nella rispettiva di
 
 File sorgenti:
 
-BidirectionalSearchAstar.py : al suo interno viene implementata la funzione 'bidirectional_search_Astar()', che riceve un oggetto AstarGraphProblem e una stringa che indica il
+BidirectionalSearchAstar.py : all'interno della classe BidirectionalSearchAstar viene implementato il metodo '
+bidirectional_search_Astar()', che riceve un oggetto AstarGraphProblem e una stringa che indica il
 tipo di frontiera, che può essere 'basic' (di default), che equivale a utilizzare una Prioritylist, o 'heap', per cui invece la frontiera viene inizializzata come PriorityQueue 
 della libreria 'queue' di python, implementata con binary heap e quindi con un tempo costante di estrazione e logaritmico di inserimento.
 

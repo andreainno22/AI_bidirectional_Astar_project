@@ -358,18 +358,6 @@ def main():
     print(result_path)
     print("Time elapsed: ", timer_end - timer_start, "\n\n")
 
-    # Supponiamo che il tuo percorso sia qualcosa del genere
-    path = result_path[0]
-    # Dividiamo le tuple in due liste separate per le coordinate x e y
-    x = [coord[0] for coord in path]
-    y = [coord[1] for coord in path]
-
-    # Creiamo il grafico
-    plt.plot(x, y)
-
-    # Mostriamo il grafico
-    plt.show()
-
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

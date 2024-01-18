@@ -32,7 +32,7 @@ def unidirectional_search_Astar(problem, frontier_type="basic"):
         _, node = frontierF.get()
         if node.state == problem.goal:
             path = Node.path(node)
-            return path, n_iter, node.effective_path_cost
+            return {"path": path}, {"n_iter": n_iter}, {"path cost": node.effective_path_cost}
 
         # Aggiorna i nodi vicini per il nodo di inizio
         for neighbor in problem.get_neighbors_un(node):

@@ -1,6 +1,6 @@
 # Bidirectional Search
 from cmath import inf
-
+from timeit import default_timer as timer
 from Node import Node
 from queue import PriorityQueue
 
@@ -9,11 +9,14 @@ from PriorityList import PriorityList
 
 class BidirectionalSearchAstar:
     def __init__(self):
+        self.exe_time = None
         self.finish = False
         self.first_solution = None
         self.n_iter_first_solution = 0
         self.no_solution = True
         self.n_iter = 0
+        self.start_time = timer()
+        self.end_time = None
 
     def bidirectional_search_Astar(self, problem, frontier_type="basic"):
         """si guarda solo il costo, non la funzione. il costo per passare da un nodo all'altro è cvw = cvw + 1/2(htv - hsv) + 1/2(hsw - htv)"""
@@ -71,8 +74,10 @@ class BidirectionalSearchAstar:
         path_first_solution2 = Node.path(self.first_solution)
         path_first_solution = path_first_solution1 + path_first_solution2[::-1]
         path_first_solution.remove(self.first_solution.state)
-        return (path, self.n_iter, solution.effective_path_cost), (
-            path_first_solution, self.n_iter_first_solution, self.first_solution.effective_path_cost)
+        return ({"path": path}, {"n_iter": self.n_iter}, {"path cost": solution.effective_path_cost}), (
+            {"first solution path": path_first_solution}, {"first solution n_iter": self.n_iter_first_solution},
+            {"first solution path cost": self.first_solution.effective_path_cost},
+            {"first solution exe time": self.exe_time})
 
     def expand(self, direction, problem, reached1, reached2, frontier, solution):
         _, node = frontier.get()
@@ -97,6 +102,8 @@ class BidirectionalSearchAstar:
                         self.first_solution = solution2
                         self.no_solution = not self.no_solution
                         self.n_iter_first_solution = self.n_iter
+                        self.end_time = timer()
+                        self.exe_time = self.end_time - self.start_time
                     if solution2.effective_path_cost < solution.effective_path_cost:
                         solution = solution2
 
