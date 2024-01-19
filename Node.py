@@ -33,17 +33,8 @@ class Node:
             node = node.parent
         return list(reversed(path_back))
 
-    # We want for a queue of nodes in breadth_first_graph_search or
-    # astar_search to have no duplicated states, so we treat nodes
-    # with the same state as equal. [Problem: this may not be what you
-    # want in other contexts.]
-
     def __eq__(self, other):
         return isinstance(other, Node) and self.state == other.state
 
     def __hash__(self):
-        # We use the hash value of the state
-        # stored in the node instead of the node
-        # object itself to quickly search a node
-        # with the same state in a Hash Table
         return hash(self.state)

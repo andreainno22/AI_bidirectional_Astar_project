@@ -1,5 +1,4 @@
 """implementa una coda con priorità con tempo di O(nlogn) per l'inserimento e O(1) per l'estrazione"""
-from timeit import default_timer as timer
 
 
 class PriorityList:
@@ -11,10 +10,7 @@ class PriorityList:
 
     def put(self, data):
         self.list.append(data)
-        start = timer()
         self.list.sort(key=lambda x: x[0], reverse=False)
-        end = timer()
-        time = end - start
 
     def get(self):
         if self.is_empty():

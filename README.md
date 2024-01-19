@@ -27,11 +27,20 @@ AstarGraphProblem.py: contiene la classe 'AstarGraphProblem' che fornisce i segu
      
   ° def h(self, currentNode, goalNodeState) : viene effettuato il calcolo dell'euristica nel currentNode, dato lo stato goal che può essere self.initial oppure self.goal a seconda
    dei casi nella ricerca bidirezionale, solo self.goal nella ricerca unidirezionale.
+
+° def effective_path_cost(self, c, action) : calcola l’effettivo path cost, serve per ottenere la soluzione finale
   
   ° def path_cost_bi(self, c, node1, action, node2) : dato il costo per raggiungere lo stato node1.state, si calcola il path_cost di node 2 come 
     c + 1 + 0.5 * (self.h(node1, self.initial) - self.h(node1, self.goal) + self.h(node2, self.goal) - self.h(node2, self.initial)) nel caso di mossa verticale o orizzontale, 
     c + 2 ** 0.5 + 0.5 * (self.h(node1, self.initial) - self.h(node1, self.goal) + self.h(node2, self.goal) - self.h(node2, self.initial)) nel caso di mossa diagonale. 
     Tale path_cost è giustificato dalle considerazioni fatte in questo articolo https://onlinelibrary.wiley.com/doi/abs/10.1002/net.20131, sezione 5.2.
+
+° def path_cost_bi(self, c, node1, action, node2) : come per la versione bidirezionale, il calcolo del costo viene fatto
+secondo la formula:
+c + 1 + 0.5 * (self.h(node1, self.goal) - self.h(node2, self.goal)) nel caso di mossa verticale o orizzontale,
+c + 2 ** 0.5 + 0.5 * (self.h(node1, self.goal) - self.h(node2, self.goal)) nel caso di mossa diagonale.
+Tale path_cost è giustificato dalle considerazioni fatte in questo
+articolo https://onlinelibrary.wiley.com/doi/abs/10.1002/net.20131, sezione 5.2.
     
   ° def get_neighbors_bi(self, node) : dato un nodo, restituisce i vicini di quel nodo, inizializzandoli e assegnando loro il path cost necessario per raggiungerli (tramite la
     funzione 'path_cost_bi()').

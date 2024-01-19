@@ -1,5 +1,4 @@
 import enum
-from cmath import sqrt
 
 from Node import Node
 from enum import Enum
@@ -17,15 +16,10 @@ class Action(enum.Enum):
 
 
 class AstarGraphProblem:
-    """The abstract class for a formal problem. You should subclass
-    this and implement the methods actions and result, and possibly
-    __init__, goal_test, and path_cost. Then you will create instances
-    of your subclass and solve them with the various search functions."""
 
     def __init__(self, initial, goal, graph, heuristic=None):
-        """The constructor specifies the initial state, and possibly a goal
-        state, if there is a unique goal. Your subclass's constructor can add
-        other arguments."""
+        """The constructor specifies the initial state, the goal
+        state, the heuristic type and the graph."""
         self.initial = initial
         self.goal = goal
         self.heuristic = heuristic
@@ -86,7 +80,6 @@ class AstarGraphProblem:
             neighbor.set_path_cost(self.path_cost_bi(node.path_cost, node, action, neighbor))
             neighbor.set_effective_path_cost(self.effective_path_cost(node.effective_path_cost, action))
             neighbors.append(neighbor)
-        """ rende una lista di stati adiacenti a quello di partenza"""
         return neighbors
 
     def get_neighbors_un(self, node):
@@ -98,16 +91,9 @@ class AstarGraphProblem:
             neighbor.set_path_cost(self.path_cost_un(node.path_cost, node, action, neighbor))
             neighbor.set_effective_path_cost(self.effective_path_cost(node.effective_path_cost, action))
             neighbors.append(neighbor)
-        """ rende una lista di stati adiacenti a quello di partenza"""
         return neighbors
 
     def path_cost_bi(self, c, node1, action, node2):
-        """Vogliamo il percorso di costo minore!!!
-        Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
-        is such that the path doesn't matter, this function will only look at
-        state2. If the path does matter, it will consider c and maybe state1
-        and action. The default method costs 1 for every step in the path."""
         if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
             return c + 1 + 0.5 * (
                     self.h(node1, self.initial) - self.h(node1, self.goal) + self.h(node2, self.goal) - self.h(
@@ -118,30 +104,21 @@ class AstarGraphProblem:
                 node2, self.initial))
 
     def path_cost_un(self, c, node1, action, node2):
-        """Vogliamo il percorso di costo minore!!!
-        Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
-        is such that the path doesn't matter, this function will only look at
-        state2. If the path does matter, it will consider c and maybe state1
-        and action. The default method costs 1 for every step in the path."""
         if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
             return c + 1 + self.h(node2, self.goal) - self.h(node1, self.goal)
         else:
             return c + 2 ** 0.5 + self.h(node2, self.goal) - self.h(node1, self.goal)
 
     def effective_path_cost(self, c, action):
-        """Vogliamo il percorso di costo minore!!!
-        Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
-        is such that the path doesn't matter, this function will only look at
-        state2. If the path does matter, it will consider c and maybe state1
-        and action. The default method costs 1 for every step in the path."""
+        """ Return the cost of a solution path that arrives at state2 from
+        state1 via action, assuming cost c to get up to state1."""
         if action == Action.UP or action == Action.DOWN or action == Action.LEFT or action == Action.RIGHT:
             return c + 1
         else:
             return c + 2 ** 0.5
 
     def h(self, currentNode, goalNodeState):
+        """ Calculate the function h"""
         if self.heuristic is None:
             return 0
         elif self.heuristic == "manhattan":

@@ -19,7 +19,6 @@ class BidirectionalSearchAstar:
         self.end_time = None
 
     def bidirectional_search_Astar(self, problem, frontier_type="basic"):
-        """si guarda solo il costo, non la funzione. il costo per passare da un nodo all'altro è cvw = cvw + 1/2(htv - hsv) + 1/2(hsw - htv)"""
         nodeF = Node(problem.initial)
         nodeB = Node(problem.goal)
         if frontier_type == "heap":
